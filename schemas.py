@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+
+# Schema de clientes
 class schema_client(BaseModel):
     name: str
     gender: str

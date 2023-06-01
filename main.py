@@ -30,6 +30,7 @@ def create_client(client: schema_client, db: Session = Depends(get_db)):
     else:
         return {"message":f"El cliente con DNI {client_existing} ya existe ", "type": "false"}
 
+# Ruta para obtener todos los clientes
 @app.get("/clients")
 def get_client():
     return {"message":"Hola mundo"}
