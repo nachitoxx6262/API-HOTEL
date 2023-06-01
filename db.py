@@ -3,7 +3,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
-
+from dotenv import load_dotenv
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
 ## variables de entorno ***
 db_user = os.environ.get("USER")
 db_password = os.environ.get("PASSWORD")
