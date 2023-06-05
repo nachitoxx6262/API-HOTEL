@@ -1,7 +1,7 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends,HTTPException, status
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import  Session
-from schemas import schema_client
+from schemas import schema_client,ClientSchema
 from models import Client
 from functions import get_db, get_client_by_dni,check_blacklist
 app = FastAPI()
@@ -38,6 +38,18 @@ def create_client(client: schema_client, db: Session = Depends(get_db)):
             return {"message":f"El cliente con DNI {client_dni} ya existe ", "type": "false"}
 
 # Ruta para obtener todos los clientes
-@app.get("/clients")
-def get_client():
-    return {"message":"Hola mundo"}
+@app.get("/clients", response_model=list[ClientSchema])
+def get_all_clients(db: Session = Depends(get_db)):
+    clients = db.query(Client).all()
+    return clients
+
+
+# Endpoint para eliminar un cliente por su DNI
+@app.delete("/clients/{dni}")
+def delete_client_by_dni(dni: str, db: Session = Depends(get_db)):
+    client = db.query(Client).filter(Client.dni == dni).first()
+    if client is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cliente no encontrado")
+    db.delete(client)
+    db.commit()
+    return {"message": "Cliente eliminado exitosamente"}

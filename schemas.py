@@ -11,3 +11,15 @@ class schema_client(BaseModel):
     blacklist: str
     email: str
     description: str
+
+class ClientSchema(BaseModel):
+    id: int
+    name: str
+    gender: str
+    dni: str
+    birthdate: str
+    tel: str
+    address: str
+    blacklist: str
+    email: str
+    description: str
